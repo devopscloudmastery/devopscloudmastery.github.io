@@ -1,0 +1,537 @@
+[
+  {
+    "id": "01",
+    "slug": "introduction",
+    "title": "Introduction to Docker & Containerization",
+    "level": "Beginner",
+    "duration": "Self-paced",
+    "description": "Deployment evolution, virtual machines, containers, and Docker architecture.",
+    "objectives": [
+      "Explain dual booting, virtualization, and containerization",
+      "Compare virtual machines with containers",
+      "Identify Docker client, daemon, images, registry, and containers"
+    ],
+    "sections": [
+      {
+        "title": "Deployment evolution",
+        "body": "Dual booting allows multiple operating systems on one machine but generally requires a reboot to switch. Virtual machines run guest operating systems through a hypervisor, typically with their own kernels. Containers isolate processes while sharing the host operating-system kernel, reducing overhead and usually improving startup speed."
+      },
+      {
+        "title": "Docker architecture",
+        "body": "The Docker client sends API requests to the Docker daemon. The daemon manages images, containers, networks, and volumes. Registries such as Docker Hub distribute images. An image is a read-only template; a container is a runnable instance with a writable layer."
+      },
+      {
+        "title": "Containers vs virtual machines",
+        "body": "Virtual machines provide guest OS isolation and are suitable when different kernels are required. Containers are generally lighter and more portable between compatible systems, but they share the host kernel."
+      }
+    ],
+    "commands": [
+      "docker --version",
+      "docker info",
+      "docker pull nginx",
+      "docker images",
+      "docker run -d --name web nginx",
+      "docker ps -a",
+      "docker stop web",
+      "docker rm web"
+    ],
+    "quiz": [
+      [
+        "Which Docker component manages containers?",
+        [
+          "Docker Hub",
+          "Docker daemon",
+          "Dockerfile",
+          "Hypervisor"
+        ],
+        1,
+        "The Docker daemon manages Docker objects."
+      ],
+      [
+        "Which statement is true about containers?",
+        [
+          "Each container requires a separate kernel",
+          "They share the host OS kernel",
+          "They are always Windows VMs",
+          "They cannot use networks"
+        ],
+        1,
+        "Ordinary Linux containers share the host Linux kernel."
+      ],
+      [
+        "What is a Docker image?",
+        [
+          "A running VM",
+          "A read-only container template",
+          "A network port",
+          "A physical host"
+        ],
+        1,
+        "Images are templates used to create containers."
+      ],
+      [
+        "Where can images be downloaded from?",
+        [
+          "Docker Hub",
+          "Docker ps",
+          "The BIOS",
+          "SSH"
+        ],
+        0,
+        "Docker Hub is a popular image registry."
+      ],
+      [
+        "Which command lists running containers?",
+        [
+          "docker ps",
+          "docker images",
+          "docker pull",
+          "docker build"
+        ],
+        0,
+        "docker ps shows running containers."
+      ]
+    ],
+    "interview": [
+      [
+        "What is containerization?",
+        "Packaging an application and its dependencies in an isolated environment that shares the host OS kernel."
+      ],
+      [
+        "How do containers differ from VMs?",
+        "VMs typically run separate guest kernels; containers share the host kernel and isolate processes."
+      ],
+      [
+        "What does the Docker daemon do?",
+        "It manages Docker images, containers, networks, and volumes through an API."
+      ],
+      [
+        "What is Docker Hub?",
+        "A hosted registry for distributing container images."
+      ],
+      [
+        "Why do containers start quickly?",
+        "They start processes without booting a separate guest operating system."
+      ]
+    ],
+    "assignments": [
+      [
+        "Compare VMs and containers",
+        "Create a comparison table for kernel, startup time, resource overhead, and isolation."
+      ],
+      [
+        "Explore Docker Engine",
+        "Run docker version and docker info; identify client and server details."
+      ],
+      [
+        "Run your first container",
+        "Pull nginx, start it, list it, stop it, and remove it."
+      ]
+    ],
+    "videoUrl": "https://drive.google.com/file/d/1XZgT8L6RNACGaF0RrXUZcDKZxOVgXB1M/view?usp=drive_link",
+    "quizPassPercent": 70
+  },
+  {
+    "id": "02",
+    "slug": "installation-lifecycle",
+    "title": "Docker Installation & Container Lifecycle",
+    "level": "Beginner",
+    "duration": "Self-paced",
+    "description": "Install Docker on Ubuntu, manage permissions, and operate container states.",
+    "objectives": [
+      "Install and verify Docker on Ubuntu",
+      "Manage permissions responsibly",
+      "Create, attach, detach, stop, restart, and remove containers"
+    ],
+    "sections": [
+      {
+        "title": "Install Docker on Ubuntu",
+        "body": "On a disposable Ubuntu cloud VM, update package indexes, install docker.io, and start the Docker service. Verify the client and daemon. Docker group membership grants effectively root-level control and should be limited to trusted users."
+      },
+      {
+        "title": "Interactive versus detached containers",
+        "body": "The -i flag keeps standard input open, -t allocates a pseudo-terminal, and -d starts a container detached. These flags are not required for every container. Containers stop when their main process exits."
+      },
+      {
+        "title": "Lifecycle and cleanup",
+        "body": "docker run creates and starts a container; docker start restarts an existing stopped container. Ctrl+P followed by Ctrl+Q detaches from an attached container. docker exec starts an additional process inside a running container. docker system prune -a can remove stopped containers, unused networks, unused images, and build cache; review before confirming."
+      }
+    ],
+    "commands": [
+      "sudo apt update",
+      "sudo apt install -y docker.io",
+      "sudo systemctl enable --now docker",
+      "sudo docker version",
+      "sudo usermod -aG docker \"$USER\"",
+      "newgrp docker",
+      "docker run -it --name ubuntu-lab ubuntu bash",
+      "docker ps -a",
+      "docker start ubuntu-lab",
+      "docker exec -it ubuntu-lab bash",
+      "docker stop ubuntu-lab",
+      "docker rm ubuntu-lab"
+    ],
+    "quiz": [
+      [
+        "Which command installs Docker from Ubuntu repositories?",
+        [
+          "sudo apt install docker.io",
+          "docker install",
+          "docker init",
+          "apt pull docker"
+        ],
+        0,
+        "Ubuntu packages Docker Engine as docker.io."
+      ],
+      [
+        "What does -it provide?",
+        [
+          "Automatic restart",
+          "Interactive input and a pseudo-terminal",
+          "A published port",
+          "Image deletion"
+        ],
+        1,
+        "-i and -t are useful for interactive shells."
+      ],
+      [
+        "What does docker start do?",
+        [
+          "Creates a new image",
+          "Starts an existing stopped container",
+          "Deletes a container",
+          "Downloads a registry"
+        ],
+        1,
+        "docker start operates on an existing container."
+      ],
+      [
+        "Which command lists all containers?",
+        [
+          "docker ps -a",
+          "docker images",
+          "docker network ls",
+          "docker tag"
+        ],
+        0,
+        "The -a flag includes stopped containers."
+      ],
+      [
+        "Which shortcut detaches without stopping the main process?",
+        [
+          "Ctrl+C",
+          "Ctrl+P then Ctrl+Q",
+          "Ctrl+D",
+          "Ctrl+Z"
+        ],
+        1,
+        "Docker uses Ctrl+P then Ctrl+Q by default."
+      ]
+    ],
+    "interview": [
+      [
+        "docker run vs docker start?",
+        "run creates and starts a new container; start runs an existing stopped container."
+      ],
+      [
+        "docker attach vs docker exec?",
+        "attach connects to the main process streams; exec launches a new process."
+      ],
+      [
+        "Why does an interactive Ubuntu container exit?",
+        "Its main shell exits, so the container main process ends."
+      ],
+      [
+        "How do you resolve Docker socket permission errors?",
+        "Check daemon status, socket access, group membership, and refresh the login session."
+      ],
+      [
+        "What is the risk of docker group membership?",
+        "It effectively provides root-level control of the Docker host."
+      ]
+    ],
+    "assignments": [
+      [
+        "Install Docker",
+        "Install Docker on Ubuntu and capture docker version and service status."
+      ],
+      [
+        "Practice lifecycle",
+        "Run an interactive Ubuntu container, detach, attach, exit, and restart it."
+      ],
+      [
+        "Clean up safely",
+        "Remove stopped lab containers and inspect disk usage using docker system df."
+      ]
+    ],
+    "videoUrl": "https://drive.google.com/file/d/1-bRsJzJ1HLy7YR1AFo33-bZLHsuJHp_0/view?usp=drive_link",
+    "quizPassPercent": 70
+  },
+  {
+    "id": "03",
+    "slug": "custom-images",
+    "title": "Application Containers & Custom Images",
+    "level": "Intermediate",
+    "duration": "Self-paced",
+    "description": "Run Apache, publish ports, customize a website, commit, tag, and push images.",
+    "objectives": [
+      "Deploy an Apache application container",
+      "Explain host-to-container port publishing",
+      "Create and share a customized image"
+    ],
+    "sections": [
+      {
+        "title": "Run Apache HTTP Server",
+        "body": "The official Apache HTTP Server image is httpd:2.4. docker run -d starts it detached. Publishing -p 7070:80 routes host port 7070 to container port 80. Detached containers still produce logs viewable with docker logs."
+      },
+      {
+        "title": "Customize the site",
+        "body": "Use docker exec to start a shell or command in a running container. For the official httpd image, the document root is /usr/local/apache2/htdocs. Container filesystem changes are ephemeral when the container is removed unless captured in an image or stored persistently."
+      },
+      {
+        "title": "Commit and publish",
+        "body": "docker commit creates an image from a container’s writable filesystem changes (not mounted volumes). Tag it with your Docker Hub namespace, authenticate using a personal access token, and push. For reproducible production images, prefer Dockerfiles over manual commits."
+      }
+    ],
+    "commands": [
+      "docker pull httpd:2.4",
+      "docker run -d --name myapache -p 7070:80 httpd:2.4",
+      "docker ps",
+      "docker logs myapache",
+      "docker exec myapache sh -c 'echo \"<h1>My Docker Website</h1>\" > /usr/local/apache2/htdocs/index.html'",
+      "curl http://localhost:7070",
+      "docker commit myapache mywebsite:v1",
+      "docker tag mywebsite:v1 YOUR_USERNAME/mywebsite:v1",
+      "docker login --username YOUR_USERNAME",
+      "docker push YOUR_USERNAME/mywebsite:v1"
+    ],
+    "quiz": [
+      [
+        "What does -p 7070:80 publish?",
+        [
+          "Host 80 to container 7070",
+          "Host 7070 to container 80",
+          "Two host ports",
+          "Only UDP traffic"
+        ],
+        1,
+        "Port syntax is HOST_PORT:CONTAINER_PORT."
+      ],
+      [
+        "What is the official Apache HTTP Server image?",
+        [
+          "apache2",
+          "httpd",
+          "web-server",
+          "http-server-only"
+        ],
+        1,
+        "The official image is httpd."
+      ],
+      [
+        "What does docker commit create?",
+        [
+          "A container image from changes",
+          "A Git commit",
+          "A cloud VM",
+          "A network"
+        ],
+        0,
+        "commit captures writable container filesystem changes in an image."
+      ],
+      [
+        "How do you view detached container logs?",
+        [
+          "docker logs",
+          "docker tag",
+          "docker push",
+          "docker image rm"
+        ],
+        0,
+        "docker logs retrieves captured output."
+      ],
+      [
+        "What is preferable for reproducible image builds?",
+        [
+          "Manual changes and commit",
+          "Dockerfile",
+          "SSH into production",
+          "Changing running binaries"
+        ],
+        1,
+        "Dockerfiles make builds repeatable and reviewable."
+      ]
+    ],
+    "interview": [
+      [
+        "Explain -d versus -it.",
+        "-d detaches the container; -it provides interactive input and a pseudo-terminal."
+      ],
+      [
+        "What is port publishing?",
+        "Mapping a host IP/port to a container port to make the service reachable through the host."
+      ],
+      [
+        "docker exec vs docker attach?",
+        "exec starts a new process; attach connects to the main process."
+      ],
+      [
+        "Why use docker tag before pushing?",
+        "The image must be named for the target registry repository, typically username/repository:tag."
+      ],
+      [
+        "Why prefer Dockerfiles to docker commit?",
+        "Dockerfiles document reproducible, version-controlled image builds."
+      ]
+    ],
+    "assignments": [
+      [
+        "Deploy Apache",
+        "Run httpd:2.4 on host port 7070 and capture the page and docker ps output."
+      ],
+      [
+        "Customize and commit",
+        "Replace index.html, commit to mywebsite:v1, and test the result."
+      ],
+      [
+        "Publish to Docker Hub",
+        "Tag, push, and redeploy your image; submit the repository URL."
+      ]
+    ],
+    "videoUrl": "https://drive.google.com/file/d/1EFHHl-tyaWFWWITj6-iep0ScdJtE2aAR/view?usp=drive_link",
+    "quizPassPercent": 70
+  },
+  {
+    "id": "04",
+    "slug": "mysql-wordpress",
+    "title": "MySQL & WordPress Multi-Container Architecture",
+    "level": "Intermediate",
+    "duration": "Self-paced",
+    "description": "Deploy a database, execute SQL, connect WordPress, and troubleshoot service dependencies.",
+    "objectives": [
+      "Run a MySQL database container and execute SQL",
+      "Connect WordPress and MySQL over a user-defined bridge network",
+      "Understand service dependencies and persistence"
+    ],
+    "sections": [
+      {
+        "title": "Database containers",
+        "body": "MySQL can run as a container initialized with a root password, application database, and application user. Connect through docker exec and the mysql CLI. Database ports do not need to be published to the host when another container accesses MySQL on the same Docker network."
+      },
+      {
+        "title": "WordPress multi-container architecture",
+        "body": "WordPress is a CMS that uses a database for posts, users, and settings. Deploy WordPress and MySQL as separate containers on a user-defined bridge network. Configure WORDPRESS_DB_HOST with the MySQL container name, not a hardcoded IP address."
+      },
+      {
+        "title": "Networking, resilience, and security",
+        "body": "A database outage disrupts database-dependent WordPress operations. A user-defined bridge provides name resolution and scoped connectivity. Keep database ports private, use least-privilege credentials, and store MySQL data in a persistent volume. Network separation is not a replacement for authentication."
+      }
+    ],
+    "commands": [
+      "docker network create wp-network",
+      "docker volume create mysql-data",
+      "docker run -d --name mysql-db --network wp-network -e MYSQL_ROOT_PASSWORD=RootLab123 -e MYSQL_DATABASE=wordpressdb -e MYSQL_USER=wpuser -e MYSQL_PASSWORD=WpLab123 -v mysql-data:/var/lib/mysql mysql:8.4",
+      "docker exec -it mysql-db mysql -u root -p",
+      "docker run -d --name wordpress-app --network wp-network -p 8080:80 -e WORDPRESS_DB_HOST=mysql-db:3306 -e WORDPRESS_DB_USER=wpuser -e WORDPRESS_DB_PASSWORD=WpLab123 -e WORDPRESS_DB_NAME=wordpressdb -v wordpress-data:/var/www/html wordpress:php8.3-apache",
+      "docker network inspect wp-network",
+      "docker logs wordpress-app",
+      "docker stop mysql-db",
+      "docker start mysql-db"
+    ],
+    "quiz": [
+      [
+        "Which variable sets the MySQL root password?",
+        [
+          "MYSQL_ROOT_PASSWORD",
+          "MYSQL_PASSWORD_ROOT",
+          "ROOT_SECRET",
+          "DB_PASSWORD"
+        ],
+        0,
+        "The official MySQL image supports MYSQL_ROOT_PASSWORD."
+      ],
+      [
+        "How should WordPress locate MySQL on a user-defined bridge?",
+        [
+          "Hardcoded container IP",
+          "Container name",
+          "Public DNS only",
+          "Docker Hub URL"
+        ],
+        1,
+        "User-defined bridges support container-name DNS resolution."
+      ],
+      [
+        "Does MySQL port 3306 need to be published to the host for WordPress on the same network?",
+        [
+          "Yes",
+          "No",
+          "Only for Ubuntu",
+          "Only with volumes"
+        ],
+        1,
+        "Containers on the same network can communicate directly."
+      ],
+      [
+        "Why use a volume for MySQL?",
+        [
+          "Speed up DNS",
+          "Persist database files",
+          "Expose HTTP",
+          "Replace passwords"
+        ],
+        1,
+        "Volumes retain data independently of container replacement."
+      ],
+      [
+        "What happens when MySQL is unavailable?",
+        [
+          "WordPress loses database functionality",
+          "WordPress becomes an image",
+          "Docker deletes all volumes",
+          "Nothing changes"
+        ],
+        0,
+        "WordPress relies on its database for normal operation."
+      ]
+    ],
+    "interview": [
+      [
+        "What is multi-container architecture?",
+        "Separate application components run in distinct containers and communicate over a network."
+      ],
+      [
+        "Why separate WordPress and MySQL?",
+        "They can be configured, updated, and managed independently."
+      ],
+      [
+        "Why use container names instead of IP addresses?",
+        "Container IP addresses may change when containers are recreated."
+      ],
+      [
+        "How do you troubleshoot database connection errors?",
+        "Check container status, logs, network, credentials, readiness, and database privileges."
+      ],
+      [
+        "How do you protect a containerized database?",
+        "Avoid unnecessary published ports, use isolated networks, least-privilege accounts, secrets, volumes, and backups."
+      ]
+    ],
+    "assignments": [
+      [
+        "Create a MySQL database",
+        "Run MySQL, create a table, insert five rows, and filter with WHERE."
+      ],
+      [
+        "Deploy WordPress",
+        "Connect WordPress and MySQL over wp-network and complete setup."
+      ],
+      [
+        "Simulate failure",
+        "Stop MySQL, observe WordPress errors, restore MySQL, and document recovery."
+      ]
+    ],
+    "videoUrl": "https://drive.google.com/file/d/1gRTs0nUEbzDXihUvWwkhlZZcMVcfud78/view?usp=drive_link",
+    "quizPassPercent": 70
+  }
+]
